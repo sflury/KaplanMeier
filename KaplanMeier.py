@@ -38,9 +38,9 @@ def km_curve(x,c):
     # at the end, no cases remain except the upper limits,
     # which all eventually go away at t -> infty
     km_y[-1] = 0
-    return km_x,km_y
+    return km_x,append([1],km_y)
 
-def km_eval(x0,x,c,x0_err):
+def km_eval(x0,x,c,x0_err=None):
     '''
     Name:
         km_eval
@@ -57,12 +57,17 @@ def km_eval(x0,x,c,x0_err):
         (upper limits), the user should convert to left censoring before use.
 
     Arguments:
-        :x0 (*float*): value at which to evaluate the Kaplan-Meier curve
+        :x0 (*np.ndarray*): value(s) at which to evaluate the Kaplan-Meier curve
         :x (*np.ndarray*): 1xN data set for which to compute the Kaplan-Meier
                 survival function
         :c (*np.ndarray*): 1xN array of integers or boolians indicating whether
                 the corresponding element of `x` is censored (c=1 or c=True) or
                 uncensored (c=0 or c=False)
+
+    Keyword Arguments:
+        :x0_err (*np.ndarray*): 1xN or 2xN array of uncertainties in `x0`. If
+                provided, the Kaplan-Meier curve will also be evaluated at
+                the uncertainties in `x0`. Default is `None`.
 
     Returns:
         :p_x (*np.ndarray*): Kaplan-Meier survival curve evaluated at `x0`,
@@ -74,14 +79,14 @@ def km_eval(x0,x,c,x0_err):
                 Kaplan-Meier survival curve for `x` is evaluated at
                 `x0`-`x0_err` and `x0`+`x0_err`, and the difference is returned.
     '''
-    if np.any(x0_err==None):
+    if any(x0_err==None):
         return interp(x0,*km_curve(x,c))
-    if xerr.ndim == 2:
+    if x0_err.ndim == 2:
         q = interp([x0-x0_err[0],x0,x0+x0_err[1]],*km_curve(x,c))
-        return q[1],diff(q)
+        return q[1],diff(q[::-1],axis=0).flatten()
     else:
-        return interp([x0-x0_err,x0,x0+x0_err],*km_curve(x,c))
-
+        q = interp([x0-x0_err,x0,x0+x0_err],*km_curve(x,c))
+        return q[1],diff(q[::-1],axis=0).flatten()
 
 def km_var(x0,x,c,n_samp=1000,method='boot',xerr=None):
     '''
