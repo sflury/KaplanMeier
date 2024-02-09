@@ -17,6 +17,7 @@ km_x,km_y = km_curve(x,c)
 p_x,p_e = km_eval(x0,x,c,x0_err=x0_err)
 ```
 which gives the results below
+
 ![image of Kaplan-Meier curve with test measurement](km_examp.png "example Kaplan-Meier test")
 
 
