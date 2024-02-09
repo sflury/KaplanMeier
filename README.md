@@ -48,6 +48,7 @@ BibTeX formatted reference provided below.
           doi = {},
 archivePrefix = {},
        eprint = {},
+          url = {https://github.com/sflury/KaplanMeier},
  primaryClass = {astro-ph.GA},
        adsurl = {https://ui.adsabs.harvard.edu/abs/},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System} }
