@@ -1,2 +1,39 @@
 # KaplanMeier
-statistical assessments with the Kaplan-Meier survival function (lower/upper limits)
+Statistical assessments with the Kaplan-Meier survival function (lower/upper limits) to test whether a measured value `x0` (typically the mean of a distribution) is associated with some population `x`, accounting for lower limits in `x`. If the Kaplan-Meier survival function at `x0` is outside the limits of 0.01 to 0.99, one can confidently reject the null hypothesis that the measurement `x0` is associated with the measurements `x`.
+
+## Examples
+pending
+
+## BibTeX reference
+While this code is provided publicly, I request that any use 
+thereof be cited in any publications in which this code is used.
+I developed and implemented this script for Flury et al. 2024 in prep
+for tests involving a sample of 89 Lyman continuum measurements,
+39 of which were upper limits requiring the censoring treatment of
+the Kaplan-Meier survival curve.
+
+``` bibtex
+@ARTICLE{Flury2024,
+       author = {{Flury}, Sophia R. and {Jaskot}, Anne E. and {the LzLCS Collaboration}},
+        title = "{The Low-redshift Lyman Continuum Survey. I. New, Diverse Local Lyman Continuum Emitters}",
+      journal = {\apjs},
+     keywords = {Reionization, Galactic and extragalactic astronomy, Ultraviolet astronomy, Hubble Space Telescope, 1383, 563, 1736, 761, Astrophysics - Astrophysics of Galaxies, Astrophysics - Cosmology and Nongalactic Astrophysics},
+         year = 2024,
+        month = {},
+       volume = {},
+       number = {},
+          eid = {},
+        pages = {},
+          doi = {},
+archivePrefix = {},
+       eprint = {},
+ primaryClass = {astro-ph.GA},
+       adsurl = {https://ui.adsabs.harvard.edu/abs/},
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+```
+
+## Licensing
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
