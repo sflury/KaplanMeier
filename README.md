@@ -1,5 +1,11 @@
 # KaplanMeier
+
 Statistical assessments with the Kaplan-Meier survival function (lower/upper limits) to test whether a measured value `x0` (typically the mean of a distribution) is associated with some population `x`, accounting for lower limits in `x`. If the Kaplan-Meier survival function at `x0` is outside the limits of 0.01 to 0.99, one can confidently reject the null hypothesis that the measurement `x0` is associated with the measurements `x`.
+
+I originally developed and implemented this script for Flury et al. 2024 in prep
+for tests involving a sample of 89 Lyman continuum measurements,
+39 of which were upper limits requiring the censoring treatment of
+the Kaplan-Meier survival curve.
 
 ## Examples
 ``` python
@@ -22,12 +28,10 @@ which gives the results below
 
 
 ## BibTeX reference
+
 While this code is provided publicly, I request that any use 
 thereof be cited in any publications in which this code is used.
-I developed and implemented this script for Flury et al. 2024 in prep
-for tests involving a sample of 89 Lyman continuum measurements,
-39 of which were upper limits requiring the censoring treatment of
-the Kaplan-Meier survival curve.
+BibTeX formatted reference provided below.
 
 ``` bibtex
 @ARTICLE{Flury2024,
@@ -46,7 +50,24 @@ archivePrefix = {},
        eprint = {},
  primaryClass = {astro-ph.GA},
        adsurl = {https://ui.adsabs.harvard.edu/abs/},
-      adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+      adsnote = {Provided by the SAO/NASA Astrophysics Data System} }
+```
+
+An additional reference to consider is the original Kaplan & Meier (1958) paper 
+which originally presented the Kaplan-Meier statistic. The BibTeX entry for their
+paper is listed below.
+
+``` bibtex
+@article{KaplanMeier1958,
+author = {E. L. Kaplan and Paul Meier},
+title = {Nonparametric Estimation from Incomplete Observations},
+journal = {Journal of the American Statistical Association},
+volume = {53},
+number = {282},
+pages = {457-481},
+year = {1958},
+publisher = {Taylor & Francis},
+doi = {10.1080/01621459.1958.10501452},
 }
 ```
 
