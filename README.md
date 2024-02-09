@@ -2,7 +2,23 @@
 Statistical assessments with the Kaplan-Meier survival function (lower/upper limits) to test whether a measured value `x0` (typically the mean of a distribution) is associated with some population `x`, accounting for lower limits in `x`. If the Kaplan-Meier survival function at `x0` is outside the limits of 0.01 to 0.99, one can confidently reject the null hypothesis that the measurement `x0` is associated with the measurements `x`.
 
 ## Examples
-pending
+``` python
+import matplotlib.pyplot as plt
+from numpy.random import seed,rand,randn
+from KaplanMeier import *
+
+seed(123)
+x = randn(100)
+c = rand(100)<0.3
+x0 = array([1.65])
+x0_err = array([[0.3],[0.5]])
+
+km_x,km_y = km_curve(x,c)
+p_x,p_e = km_eval(x0,x,c,x0_err=x0_err)
+```
+which gives the results below
+![image of Kaplan-Meier curve with test measurement](km_examp.png "example Kaplan-Meier test")
+
 
 ## BibTeX reference
 While this code is provided publicly, I request that any use 
