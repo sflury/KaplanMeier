@@ -55,7 +55,7 @@ archivePrefix = {},
 ```
 
 An additional reference to consider is the original Kaplan & Meier (1958) paper 
-which originally presented the Kaplan-Meier statistic. The BibTeX entry for their
+which first presented the Kaplan-Meier statistic. The BibTeX entry for their
 paper is listed below.
 
 ``` bibtex
