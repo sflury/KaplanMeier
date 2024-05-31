@@ -54,10 +54,6 @@ archivePrefix = {},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System} }
 ```
 
-## DOI
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11406486.svg)](https://doi.org/10.5281/zenodo.11406486)
-
 An additional reference to consider is the original Kaplan & Meier (1958) paper 
 which first presented the Kaplan-Meier statistic. The BibTeX entry for their
 paper is listed below.
@@ -75,6 +71,10 @@ publisher = {Taylor & Francis},
 doi = {10.1080/01621459.1958.10501452},
 }
 ```
+
+## DOI
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11406486.svg)](https://doi.org/10.5281/zenodo.11406486)
 
 ## Licensing
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
