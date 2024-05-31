@@ -54,6 +54,10 @@ archivePrefix = {},
       adsnote = {Provided by the SAO/NASA Astrophysics Data System} }
 ```
 
+## DOI
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11406486.svg)](https://doi.org/10.5281/zenodo.11406486)
+
 An additional reference to consider is the original Kaplan & Meier (1958) paper 
 which first presented the Kaplan-Meier statistic. The BibTeX entry for their
 paper is listed below.
