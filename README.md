@@ -2,7 +2,7 @@
 
 Statistical assessments with the Kaplan-Meier survival function (lower/upper limits) to test whether a measured value `x0` (typically the mean of a distribution) is associated with some population `x`, accounting for lower limits in `x`. If the Kaplan-Meier survival function at `x0` is outside the limits of 0.01 to 0.99, one can confidently reject the null hypothesis that the measurement `x0` is associated with the measurements `x`.
 
-I originally developed and implemented this script for Flury et al. 2024 in prep
+I originally developed and implemented this script for Flury et al. 2024
 for tests involving a sample of 89 Lyman continuum measurements,
 39 of which were upper limits requiring the censoring treatment of
 the Kaplan-Meier survival curve.
@@ -77,6 +77,14 @@ doi = {10.1080/01621459.1958.10501452},
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11406486.svg)](https://doi.org/10.5281/zenodo.11406486)
 
 ## Licensing
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+<a href="https://github.com/sflury/KaplanMeier">KaplanMeier</a> © 2024 by <a href="https://sflury.github.io">Sophia Flury</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</a>
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+<img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg" style="max-width: 1em;max-height:1em;margin-left: .2em;">
+
+This license enables reusers to copy and distribute KaplanMeier in any medium or format in unadapted form only, for noncommercial purposes only, and only so long as attribution is given to the creator. CC BY-NC-ND 4.0 includes the following elements:
+
+BY: credit must be given to the creator.
+NC: Only noncommercial uses of the work are permitted.
+ND: No derivatives or adaptations of the work are permitted.
+
+You should have received a copy of the CC BY-NC-ND 4.0 along with this program. If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
