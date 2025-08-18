@@ -1,5 +1,6 @@
-from numpy import append,any,array,diff,interp,invert,quantile,sort
+from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp
 from numpy.random import choice,normal
+from scipy.special import gamma, ndtri
 
 # Kaplan-Meier Curve
 def km_curve(x,c):
@@ -136,3 +137,51 @@ def km_var(x0,x,c,n_samp=1000,method='boot',xerr=None):
         k = array(list(map(lambda xi: interp(x0,*km_curve(xi,c)),X)))
     q = quantile(k,[0.1587,0.5,0.8413])
     return q[1],*diff(q)
+
+# Kaplan-Meier Log Rank Test
+def km_logrank(x1,c1,x2,c2):
+    '''
+    Name:
+        km_logrank
+
+    Purpose:
+        Compute the log-rank test using Kaplan-Meier survival functions for
+        two data sets, accounting for left censoring (lower limits). If data
+        are right censored (upper limits), convert to left censoring before use.
+
+    Arguments:
+        :x1 (*np.ndarray*): 1xN data set for which to compute the Kaplan-Meier
+                survival function
+        :c1 (*np.ndarray*): 1xN array of integers or boolians indicating whether
+                the corresponding element of `x1` is censored (c1=1 or c1=True) or
+                uncensored (c1=0 or c1=False)
+        :x2 (*np.ndarray*): 1xM data set for which to compute the Kaplan-Meier
+                survival function
+        :c2 (*np.ndarray*): 1xM array of integers or boolians indicating whether
+                the corresponding element of `x2` is censored (c2=1 or c2=True) or
+                uncensored (c2=0 or c2=False)
+    Returns:
+        :Z (*float*): maximum variance-weighted difference between the two
+                survival curves
+        :p (*float*): probability that the null hypothesis is true assuming that
+                the variance-weighted difference is drawn from a chi squared
+                distribution
+    '''
+    n     = max([len(x1),len(x2)])
+    k     = n-1
+    nbin  = int((2*(2*float(len(x))**2/ndtri(0.95))**0.2)//1+1)
+    bins  = np.linspace(min([min(x1),min(x2)]),max([max(x1),max(x2)]),nbin)
+    Y1    = array( list( map( lambda i: len(x1[(x1<bins[i])]), range(1,nbin) ) ) )
+    Y2    = array( list( map( lambda i: len(x2[(x2<bins[i])]), range(1,nbin) ) ) )
+    u1    = c1==False
+    u2    = c2==False
+    d1    = array( list( map( lambda i: len(x1[u1][(x1[u1]<bins[i])]), range(1,nbin) ) ) )
+    d2    = array( list( map( lambda i: len(x2[u2][(x2[u2]<bins[i])]), range(1,nbin) ) ) )
+    Y     = Y1+Y2
+    d     = d1+d2
+    O     = d2
+    E     = d*Y2/Y
+    V     = Y1*Y2*d*(Y-d)/(Y**2*(Y-1))
+    Z     = sum(O-E)/sqrt(sum(V))
+    chisq = Z**(k/2)*exp(-Z/2) / (2**(k/2)*gamma(k/2))
+    return Z,chisq
