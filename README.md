@@ -13,6 +13,9 @@ for tests involving a sample of 89 Lyman continuum measurements,
 the Kaplan-Meier survival curve.
 
 ## Examples
+
+### Kaplan Meier Survival Test
+
 ``` python
 import matplotlib.pyplot as plt
 from numpy.random import seed,rand,randn
@@ -31,6 +34,23 @@ which gives the results below
 
 ![image of Kaplan-Meier curve with test measurement](km_examp.png "example Kaplan-Meier test")
 
+### Mantel Log Rank Test with Kaplan Meier Survival
+
+``` python
+from numpy.random import seed,rand,randn
+from KaplanMeier import *
+seed(123)
+x1 = rand(50) # all reference measurements
+c1 = x1<0.1 # where measurements are upper limits
+x2 = randn(30)*0.1+0.5 # new/test measurements
+c2 = x2<-0.1 # where measurements are upper limits
+D,Z,pvalue = km_logrank(x1,c1,x2,c2) # get p-value
+print(f'p-value = {pvalue:.6f}')
+```
+which prints the following to the command line
+``` python
+p-value = 0.037192
+```
 
 ## BibTeX reference
 
