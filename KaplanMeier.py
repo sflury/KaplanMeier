@@ -1,6 +1,6 @@
 from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp
 from numpy.random import choice,normal
-from scipy.special import gamma, ndtri
+from scipy.special import gamma, gammainc, ndtr
 
 # Kaplan-Meier Curve
 def km_curve(x,c):
@@ -164,8 +164,8 @@ def km_logrank(x1,c1,x2,c2):
         :Z (*float*): maximum variance-weighted difference between the two
                 survival curves
         :p (*float*): probability that the null hypothesis is true assuming that
-                the variance-weighted difference is drawn from a chi squared
-                distribution
+                the variance-weighted difference is drawn from a normal
+                distribution with zero mean and unity standard deviation
     '''
     n     = max([len(x1),len(x2)])
     k     = n-1
@@ -182,6 +182,6 @@ def km_logrank(x1,c1,x2,c2):
     O     = d2
     E     = d*Y2/Y
     V     = Y1*Y2*d*(Y-d)/(Y**2*(Y-1))
-    Z     = sum(O-E)/sqrt(sum(V))
-    chisq = Z**(k/2)*exp(-Z/2) / (2**(k/2)*gamma(k/2))
-    return Z,chisq
+    Z     = sum((O-E))/sqrt(sum(V))
+    pval  = ndtr(Z)
+    return abs(Z),1-pval
