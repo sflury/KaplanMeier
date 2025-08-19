@@ -77,6 +77,21 @@ doi = {10.1080/01621459.1958.10501452},
 }
 ```
 
+The related log-rank test is based on the formalism from Mantel (1966). The
+BibTeX entrey for his paper is listed below.
+
+``` bibtex
+@article{Mantel1966,
+title={Evaluation of survival data and two new rank order statistics arising in its consideration},
+author={Nathan Mantel},
+journal={Cancer Chemotherapy Reports},
+year={1966},
+volume={50},
+number={3},
+pages={163-170}
+}
+```
+
 ## DOI
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11406486.svg)](https://doi.org/10.5281/zenodo.11406486)
