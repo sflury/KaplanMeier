@@ -1,6 +1,6 @@
 from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp
 from numpy.random import choice,normal
-from scipy.special import gamma, gammainc, ndtr
+from scipy.special import gamma, gammainc, ndtr, ndtri
 
 # Kaplan-Meier Curve
 def km_curve(x,c):
@@ -138,8 +138,8 @@ def km_var(x0,x,c,n_samp=1000,method='boot',xerr=None):
     q = quantile(k,[0.1587,0.5,0.8413])
     return q[1],*diff(q)
 
-# Kaplan-Meier Log Rank Test
-def km_logrank(x1,c1,x2,c2):
+# Mantel Log Rank Test for Kaplan Meier survival curves
+def km_logrank(x1,c1,x2,c2,bins=None):
     '''
     Name:
         km_logrank
@@ -151,37 +151,57 @@ def km_logrank(x1,c1,x2,c2):
 
     Arguments:
         :x1 (*np.ndarray*): 1xN data set for which to compute the Kaplan-Meier
-                survival function
+                survival function; this is the reference data set
         :c1 (*np.ndarray*): 1xN array of integers or boolians indicating whether
                 the corresponding element of `x1` is censored (c1=1 or c1=True) or
                 uncensored (c1=0 or c1=False)
         :x2 (*np.ndarray*): 1xM data set for which to compute the Kaplan-Meier
-                survival function
+                survival function; this is the test data set
         :c2 (*np.ndarray*): 1xM array of integers or boolians indicating whether
                 the corresponding element of `x2` is censored (c2=1 or c2=True) or
                 uncensored (c2=0 or c2=False)
     Returns:
+        :D (*float*): maximum difference between the two survival curves
         :Z (*float*): maximum variance-weighted difference between the two
                 survival curves
         :p (*float*): probability that the null hypothesis is true assuming that
                 the variance-weighted difference is drawn from a normal
                 distribution with zero mean and unity standard deviation
     '''
+    # size of largest data set
     n     = max([len(x1),len(x2)])
+    # degrees of freedom -- not used
     k     = n-1
-    nbin  = int((2*(2*float(len(x))**2/ndtri(0.95))**0.2)//1+1)
-    bins  = np.linspace(min([min(x1),min(x2)]),max([max(x1),max(x2)]),nbin)
-    Y1    = array( list( map( lambda i: len(x1[(x1<bins[i])]), range(1,nbin) ) ) )
-    Y2    = array( list( map( lambda i: len(x2[(x2<bins[i])]), range(1,nbin) ) ) )
+    # draw bins
+    if bins == None :
+        nbin  = int((2*(2*float(len(x))**2/ndtri(0.95))**0.2)//1+1)
+        bins  = np.linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),nbin)
+    elif hasattr(bins,'__len__'):
+        nbin = len(bins)
+    else:
+        bins = np.linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),bins)
+        nbin = len(bins)
+    # total events, censored and uncensored, up to this point in the bin spacing
+    Y1    = array(list(map(lambda i: len(x1[(x1<bins[i])]),range(1,nbin)))).astype(float)
+    Y2    = array(list(map(lambda i: len(x2[(x2<bins[i])]),range(1,nbin)))).astype(float)
+    # events which are uncensored
     u1    = c1==False
     u2    = c2==False
-    d1    = array( list( map( lambda i: len(x1[u1][(x1[u1]<bins[i])]), range(1,nbin) ) ) )
-    d2    = array( list( map( lambda i: len(x2[u2][(x2[u2]<bins[i])]), range(1,nbin) ) ) )
+    # total uncensored events up to this point in the bin spacing
+    d1    = array(list(map(lambda i: len(x1[u1][(x1[u1]<bins[i])]),range(1,nbin)))).astype(float)
+    d2    = array(list(map(lambda i: len(x2[u2][(x2[u2]<bins[i])]),range(1,nbin)))).astype(float)
+    # sum up for both data sets
     Y     = Y1+Y2
     d     = d1+d2
+    # observed uncensored events in new/test data set
     O     = d2
+    # expected uncensored events in new/test data set
+    # based on the original/reference data set
     E     = d*Y2/Y
+    # variance based on the two data sets
     V     = Y1*Y2*d*(Y-d)/(Y**2*(Y-1))
-    Z     = sum((O-E))/sqrt(sum(V))
-    pval  = ndtr(Z)
-    return abs(Z),1-pval
+    # variance-weighted differences
+    Z     = sum(O-E)/sqrt(sum(V))
+    # p-value with Z drawn from N(0,1)
+    pval  = 1-ndtr(Z)
+    return abs(max(O-E)),abs(Z),pval
