@@ -174,7 +174,7 @@ def km_logrank(x1,c1,x2,c2,bins=None):
     k     = n-1
     # draw bins
     if bins == None :
-        nbin  = int((2*(2*float(len(x))**2/ndtri(0.95))**0.2)//1+1)
+        nbin  = int((2*(2*float(max([len(x1),len(x2)]))**2/ndtri(0.95))**0.2)//1+1)
         bins  = np.linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),nbin)
     elif hasattr(bins,'__len__'):
         nbin = len(bins)
