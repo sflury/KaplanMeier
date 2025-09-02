@@ -1,4 +1,4 @@
-from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp
+from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp,linspace
 from numpy.random import choice,normal
 from scipy.special import gamma, gammainc, ndtr, ndtri
 
@@ -175,11 +175,11 @@ def km_logrank(x1,c1,x2,c2,bins=None):
     # draw bins
     if bins == None :
         nbin  = int((2*(2*float(max([len(x1),len(x2)]))**2/ndtri(0.95))**0.2)//1+1)
-        bins  = np.linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),nbin)
+        bins  = linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),nbin)
     elif hasattr(bins,'__len__'):
         nbin = len(bins)
     else:
-        bins = np.linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),bins)
+        bins = linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),bins)
         nbin = len(bins)
     # total events, censored and uncensored, up to this point in the bin spacing
     Y1    = array(list(map(lambda i: len(x1[(x1<bins[i])]),range(1,nbin)))).astype(float)
