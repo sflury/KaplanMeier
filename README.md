@@ -7,10 +7,11 @@ limits in `x`. If the Kaplan-Meier survival function at `x0` is outside the
 limits of 0.01 to 0.99, one can confidently reject the null hypothesis that 
 the measurement `x0` is associated with the measurements `x`.
 
-I originally developed and implemented this script for Flury et al. 2024
+I originally developed and implemented this script for Flury et al. 2025
 for tests involving a sample of 89 Lyman continuum measurements,
 39 of which were upper limits requiring the censoring treatment of
-the Kaplan-Meier survival curve.
+the Kaplan-Meier survival curve. I later added the log rank test for 
+Le Reste et al. 2025.
 
 ## Examples
 
@@ -62,15 +63,15 @@ BibTeX formatted reference provided below.
 @ARTICLE{Flury2024,
        author = {{Flury}, Sophia R. and {Jaskot}, Anne E. and {the LzLCS Collaboration}},
         title = "{The Low-Redshift Lyman Continuum Survey: The Roles of Stellar Feedback and ISM Geometry in LyC Escape}",
-      journal = {\apjs},
+      journal = {\apj},
      keywords = {Reionization, Galactic and extragalactic astronomy, Ultraviolet astronomy, Hubble Space Telescope, 1383, 563, 1736, 761, Astrophysics - Astrophysics of Galaxies, Astrophysics - Cosmology and Nongalactic Astrophysics},
-         year = 2024,
-        month = {},
-       volume = {},
-       number = {},
-          eid = {},
-        pages = {},
-          doi = {10.48550/arXiv.2409.12118},
+         year = 2025,
+        month = may,
+       volume = {985},
+       number = {1},
+          eid = {128},
+        pages = {128},
+          doi = {10.3847/1538-4357/adc305},
 archivePrefix = {arXiv},
        eprint = {2409.12118},
           url = {https://github.com/sflury/KaplanMeier},
