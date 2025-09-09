@@ -162,11 +162,11 @@ def km_logrank(x1,c1,x2,c2,bins=None):
                 uncensored (c2=0 or c2=False)
     Returns:
         :D (*float*): maximum difference between the two survival curves
-        :Z (*float*): maximum variance-weighted difference between the two
+        :T (*float*): variance-weighted squared difference between the two
                 survival curves
         :p (*float*): probability that the null hypothesis is true assuming that
-                the variance-weighted difference is drawn from a normal
-                distribution with zero mean and unity standard deviation
+                the variance-weighted squared difference is drawn from a chi_sq
+                distribution with one degree of freedom
     '''
     # size of largest data set
     n     = max([len(x1),len(x2)])
@@ -202,6 +202,6 @@ def km_logrank(x1,c1,x2,c2,bins=None):
     V     = Y1*Y2*d*(Y-d)/(Y**2*(Y-1))
     # variance-weighted differences
     Z     = sum(O-E)/sqrt(sum(V))
-    # p-value with Z drawn from N(0,1)
-    pval  = 1-ndtr(Z)
-    return abs(max(O-E)),abs(Z),pval
+    # p-value with Z^2 drawn from chi^2(1)
+    pval  = 1-gammainc(1/2,Z**2/2)
+    return abs(max(O-E)),Z**2,pval
