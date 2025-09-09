@@ -44,12 +44,12 @@ x1 = rand(50) # all reference measurements
 c1 = x1<0.1 # where measurements are upper limits
 x2 = randn(30)*0.1+0.5 # new/test measurements
 c2 = x2<-0.1 # where measurements are upper limits
-D,Z,pvalue = km_logrank(x1,c1,x2,c2) # get p-value
+D,T,pvalue = km_logrank(x1,c1,x2,c2) # get p-value
 print(f'p-value = {pvalue:.6f}')
 ```
 which prints the following to the command line
 ``` python
-p-value = 0.037192
+p-value = 0.005178
 ```
 
 ## BibTeX reference
