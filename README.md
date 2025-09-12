@@ -45,12 +45,15 @@ x1 = rand(50) # all reference measurements
 c1 = x1<0.1 # where measurements are upper limits
 x2 = randn(30)*0.1+0.5 # new/test measurements
 c2 = x2<-0.1 # where measurements are upper limits
-D,T,pvalue = km_logrank(x1,c1,x2,c2) # get p-value
-print(f'p-value = {pvalue:.6f}')
+D,T,pvalue = km_logrank(x1,c1,x2,c2,estimator='mantel') # Mantel p-value
+print(f' Mantel 1966 p-value = {pvalue:.6f}')
+D,T,pvalue = km_logrank(x1,c1,x2,c2,estimator='pike') # Pike p-value
+print(f'   Pike 1972 p-value = {pvalue:.6f}')
 ```
 which prints the following to the command line
 ``` python
-p-value = 0.005178
+ Mantel 1966 p-value = 0.000000
+   Pike 1972 p-value = 0.087788
 ```
 
 ## BibTeX reference
@@ -98,9 +101,12 @@ doi = {10.1080/01621459.1958.10501452},
 }
 ```
 
-The related log-rank test is based on the formalism from Mantel (1966). The
-BibTeX entrey for his paper is listed below.
+The related log-rank test is based on the formalism from Pike (1972)--the default
+--or Mantel (1966). The BibTeX entrey for each paper is listed below along with 
+one other relevant source, Peto and Pike (1973), which assesses different logrank
+test statistic estimators.
 
+Mantel 1966 estimator
 ``` bibtex
 @article{Mantel1966,
 title={Evaluation of survival data and two new rank order statistics arising in its consideration},
@@ -110,6 +116,34 @@ year={1966},
 volume={50},
 number={3},
 pages={163-170}
+}
+```
+
+Pike 1972 estimator
+``` bibtex
+@article{Pike1972,
+title={Contribution to the discussion on the paper by R. Pet0 and J. Peto,
+“Asymptotically efficient rank invariant test procedures”},
+author={M. C. Pike},
+journal={Journal ofthe Royal Statistical Society, Series A},
+year={1972},
+volume={135},
+number={3},
+pages={201-203}
+}
+```
+
+Assessment of different logrank estimators to determine which is most
+conservative (i.e., least likely to reject the null hypothesis)
+``` bibtex
+@article{PetoPike1973,
+title={Conservatism of the approximation $\sum(0-E)^2/E$ in logrank test for
+survival or tumor incidence data},
+author={Peto, R. and Pike, M. C.},
+journal={Biornetrics},
+year={1973},
+volume={29},
+pages={579-583}
 }
 ```
 
