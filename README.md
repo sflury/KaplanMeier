@@ -10,8 +10,9 @@ the measurement `x0` is associated with the measurements `x`.
 I originally developed and implemented this script for Flury et al. 2025
 for tests involving a sample of 89 Lyman continuum measurements,
 39 of which were upper limits requiring the censoring treatment of
-the Kaplan-Meier survival curve. I later added the log rank test for 
-Le Reste et al. 2025.
+the Kaplan-Meier survival curve. I later added the logrank test for 
+Le Reste et al. 2025. Special thanks to A. Le Reste for testing the log-rank
+function and flagging a few bugs.
 
 ## Examples
 
@@ -35,7 +36,7 @@ which gives the results below
 
 ![image of Kaplan-Meier curve with test measurement](km_examp.png "example Kaplan-Meier test")
 
-### Mantel Log Rank Test with Kaplan Meier Survival
+### Log-Rank Test with Kaplan Meier Survival
 
 ``` python
 from numpy.random import seed,rand,randn
@@ -60,10 +61,15 @@ which prints the following to the command line
 
 While this code is provided publicly, I request that any use 
 thereof be cited in any publications in which this code is used.
-BibTeX formatted reference provided below.
+The relevant BibTeX entry for the software repository is 
+available via the "Cite This Repository" button here on GitHub
+or via the "Export" button on the
+[Zenodo site](https://doi.org/10.5281/zenodo.17106827).
+
+Other relevant BibTeX formatted reference provided below.
 
 ``` bibtex
-@ARTICLE{Flury2024,
+@ARTICLE{Flury2025,
        author = {{Flury}, Sophia R. and {Jaskot}, Anne E. and {the LzLCS Collaboration}},
         title = "{The Low-Redshift Lyman Continuum Survey: The Roles of Stellar Feedback and ISM Geometry in LyC Escape}",
       journal = {\apj},
