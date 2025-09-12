@@ -1,4 +1,5 @@
-from numpy import append,any,array,diff,interp,invert,quantile,sort,sqrt,exp,linspace
+from numpy import append,any,array,diff,interp,invert,quantile, \
+                    sort,searchsorted,nansum,nanmax
 from numpy.random import choice,normal
 from scipy.special import gamma, gammainc, ndtr, ndtri
 
@@ -139,7 +140,7 @@ def km_var(x0,x,c,n_samp=1000,method='boot',xerr=None):
     return q[1],*diff(q)
 
 # Mantel Log Rank Test for Kaplan Meier survival curves
-def km_logrank(x1,c1,x2,c2,bins=None):
+def km_logrank(x1,c1,x2,c2,estimator='pike'):
     '''
     Name:
         km_logrank
@@ -160,6 +161,13 @@ def km_logrank(x1,c1,x2,c2,bins=None):
         :c2 (*np.ndarray*): 1xM array of integers or boolians indicating whether
                 the corresponding element of `x2` is censored (c2=1 or c2=True) or
                 uncensored (c2=0 or c2=False)
+
+    Keyword Arguments:
+        :estimator (*str*): method for computing the estimator of the variance-
+                weighted square difference between distributions. Options are
+                `mantle` for Mantel 1966, or `pike` for Pike 1972.
+                Default is `pike`, the more conservative (Peto & Pike 1973).
+
     Returns:
         :D (*float*): maximum difference between the two survival curves
         :T (*float*): variance-weighted squared difference between the two
@@ -168,40 +176,36 @@ def km_logrank(x1,c1,x2,c2,bins=None):
                 the variance-weighted squared difference is drawn from a chi_sq
                 distribution with one degree of freedom
     '''
-    # size of largest data set
-    n     = max([len(x1),len(x2)])
-    # degrees of freedom -- not used
-    k     = n-1
-    # draw bins
-    if bins == None :
-        nbin  = int((2*(2*float(max([len(x1),len(x2)]))**2/ndtri(0.95))**0.2)//1+1)
-        bins  = linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),nbin)
-    elif hasattr(bins,'__len__'):
-        nbin = len(bins)
-    else:
-        bins = linspace(0.99*min([min(x1),min(x2)]),1.01*max([max(x1),max(x2)]),bins)
-        nbin = len(bins)
-    # total events, censored and uncensored, up to this point in the bin spacing
-    Y1    = array(list(map(lambda i: len(x1[(x1<bins[i])]),range(1,nbin)))).astype(float)
-    Y2    = array(list(map(lambda i: len(x2[(x2<bins[i])]),range(1,nbin)))).astype(float)
+    # intervals
+    ivls  = sort(append(x1,x2))
+    # total events, censored and uncensored, up to each point in full sample
+    Y1    = searchsorted(sort(x1),ivls).astype(float)
+    Y2    = searchsorted(sort(x2),ivls).astype(float)
     # events which are uncensored
     u1    = c1==False
     u2    = c2==False
-    # total uncensored events up to this point in the bin spacing
-    d1    = array(list(map(lambda i: len(x1[u1][(x1[u1]<bins[i])]),range(1,nbin)))).astype(float)
-    d2    = array(list(map(lambda i: len(x2[u2][(x2[u2]<bins[i])]),range(1,nbin)))).astype(float)
+    # total uncensored events up to each point in full sample
+    d1    = searchsorted(sort(x1[u1]),ivls).astype(float)
+    d2    = searchsorted(sort(x2[u2]),ivls).astype(float)
     # sum up for both data sets
     Y     = Y1+Y2
     d     = d1+d2
-    # observed uncensored events in new/test data set
-    O     = d2
     # expected uncensored events in new/test data set
     # based on the original/reference data set
-    E     = d*Y2/Y
+    E1    = d*Y1/Y
+    E2    = d*Y2/Y
     # variance based on the two data sets
-    V     = Y1*Y2*d*(Y-d)/(Y**2*(Y-1))
+    V     = Y1*Y2*d*(Y-d)/(Y**2.*(Y-1.))
     # variance-weighted differences
-    Z     = sum(O-E)/sqrt(sum(V))
+    if estimator.lower() not in ['mantel','pike']:
+        raise ValueError(f'Estimator \'{estimator}\' not recognized.\n'+\
+                'Options are \'mantel\' or \'pike\'.')
+    # Mantel 1966 estimator for T
+    elif estimator.lower() == 'mantel' :
+        T    = nansum(d1-E1)**2/nansum(V)
+    # Pike 1972 estimator for T
+    elif estimator.lower() == 'pike' :
+        T    = nansum(d1-E1)**2/nansum(E1)+nansum(d2-E2)**2/nansum(E2)
     # p-value with Z^2 drawn from chi^2(1)
-    pval  = 1-gammainc(1/2,Z**2/2)
-    return abs(max(O-E)),Z**2,pval
+    pval  = 1.-gammainc(0.5,0.5*T)
+    return abs(nanmax(d1-E1)),T,pval
